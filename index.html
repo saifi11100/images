@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrieve Images</title>
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+    <!-- Firebase Realtime Database -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"></script>
+    <style>
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .image-gallery img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-gallery" id="imageGallery"></div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+
+    apiKey: "AIzaSyC5MDu3Ip6w6G7BlxnWSjutmPoapY85hN0",
+
+    authDomain: "my-map-7be74.firebaseapp.com",
+    databaseURL: "https://my-map-7be74-default-rtdb.firebaseio.com",
+    projectId: "my-map-7be74",
+    storageBucket: "my-map-7be74.appspot.com",
+    messagingSenderId: "412149741172",
+    appId: "1:412149741172:web:d2f9d38356efc0d3260321"
+};
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Reference to the usersL/photos path
+        const photosRef = db.ref('usersL/photos');
+
+        // Function to retrieve and display images
+        photosRef.on('value', (snapshot) => {
+            const gallery = document.getElementById('imageGallery');
+            gallery.innerHTML = ''; // Clear the gallery
+
+            snapshot.forEach(childSnapshot => {
+                const imageUrl = childSnapshot.val(); // Assuming URLs are stored here
+
+                // Create an image element and append it to the gallery
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                gallery.appendChild(img);
+            });
+        });
+    </script>
+</body>
+</html>
